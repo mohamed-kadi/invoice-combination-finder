@@ -25,7 +25,11 @@ jobs:
       - name: Build
         env:
           VITE_API_BASE_URL: https://continental-nichole-modika-f88dcd60.koyeb.app
+          GITHUB_PAGES: "true"
         run: npm run build
+
+      - name: Create SPA fallback
+        run: cp dist/index.html dist/404.html
 
       - name: Upload dist
         uses: actions/upload-pages-artifact@v3
