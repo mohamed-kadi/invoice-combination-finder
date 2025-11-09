@@ -2,17 +2,18 @@ name: CI
 
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main
   pull_request:
-    branches: ["main"]
+    branches:
+      - main
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  backend-tests:
-    name: Backend Tests
+  backend:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -25,20 +26,19 @@ jobs:
           java-version: 17
           cache: maven
 
-      - name: Run Maven tests
+      - name: Run backend tests
         working-directory: backend
         run: |
           chmod +x mvnw
           ./mvnw -q test
 
-  frontend-build:
-    name: Frontend Lint & Build
+  frontend:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
+      - name: Set up Node.js 20
         uses: actions/setup-node@v4
         with:
           node-version: 20
