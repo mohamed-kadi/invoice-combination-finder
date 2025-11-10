@@ -66,14 +66,10 @@ function NavBar() {
 
   return (
     <nav className="bg-white/80 backdrop-blur border-b border-slate-200">
-      <div
-        className={`mx-auto flex w-full max-w-5xl flex-col gap-3 px-6 py-3 sm:flex-row sm:items-center sm:justify-between ${
-          isArabic ? "sm:flex-row-reverse" : ""
-        }`}
-      >
+      <div className="mx-auto w-full max-w-5xl px-6 py-3 space-y-3">
         <div
-          className={`flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6 ${
-            isArabic ? "items-end sm:flex-row-reverse" : "items-start"
+          className={`flex items-center justify-between ${
+            isArabic ? "flex-row-reverse" : ""
           }`}
         >
           <Link
@@ -83,76 +79,76 @@ function NavBar() {
           >
             <img src={brandLogo} alt="InvoiceMix logo" className="h-6 w-6" />
           </Link>
-          <div
-            className={`flex flex-wrap items-center gap-4 ${
-              isArabic ? "justify-end text-right" : "justify-start"
-            }`}
-          >
-            {NAV_ITEMS.map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                aria-current={currentPath === item.path ? "page" : undefined}
-                className={`text-sm font-semibold transition ${
-                  currentPath === item.path
-                    ? "text-brand"
-                    : "text-slate-700 hover:text-brand"
-                }`}
+          <div className="relative" ref={menuRef}>
+            <button
+              type="button"
+              onClick={() => setIsMenuOpen((prev) => !prev)}
+              aria-haspopup="true"
+              aria-expanded={isMenuOpen}
+              aria-label={translations.languageSelectorAria}
+              className="flex items-center gap-2 rounded-full border border-slate-300 bg-white px-3 py-1 text-xs font-semibold text-slate-600 transition hover:border-brand/60 hover:text-brand"
+            >
+              <span className="sr-only">{text.languageLabel}</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                className="h-5 w-5"
               >
-                {text[item.labelKey]}
-              </Link>
-            ))}
+                <path d="M12 21c4.97 0 9-4.03 9-9s-4.03-9-9-9-9 4.03-9 9 4.03 9 9 9Z" />
+                <path d="M3.6 9h16.8" />
+                <path d="M3.6 15h16.8" />
+                <path d="M12 3c-2.5 3-3.75 6-3.75 9s1.25 6 3.75 9c2.5-3 3.75-6 3.75-9s-1.25-6-3.75-9Z" />
+              </svg>
+            </button>
+            {isMenuOpen && (
+              <div
+                className={`absolute z-50 mt-2 w-36 rounded-xl border border-slate-200 bg-white shadow-xl ${
+                  isArabic ? "left-0" : "right-0"
+                }`}
+                role="menu"
+              >
+                {LANGUAGE_CODES.map((code) => (
+                  <button
+                    key={code}
+                    type="button"
+                    onClick={() => setLanguage(code)}
+                    className={`flex w-full items-center justify-between px-3 py-2 text-sm transition ${
+                      language === code
+                        ? "bg-brand text-white"
+                        : "text-slate-600 hover:bg-slate-100"
+                    }`}
+                    role="menuitem"
+                  >
+                    <span>{translations.languages[code]}</span>
+                    {language === code && <span>•</span>}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
-        <div className="relative" ref={menuRef}>
-          <button
-            type="button"
-            onClick={() => setIsMenuOpen((prev) => !prev)}
-            aria-haspopup="true"
-            aria-expanded={isMenuOpen}
-            aria-label={translations.languageSelectorAria}
-            className="flex items-center gap-2 rounded-full border border-slate-300 bg-white px-3 py-1 text-xs font-semibold text-slate-600 transition hover:border-brand/60 hover:text-brand"
-          >
-            <span className="sr-only">{text.languageLabel}</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              className="h-5 w-5"
-            >
-              <path d="M12 21c4.97 0 9-4.03 9-9s-4.03-9-9-9-9 4.03-9 9 4.03 9 9 9Z" />
-              <path d="M3.6 9h16.8" />
-              <path d="M3.6 15h16.8" />
-              <path d="M12 3c-2.5 3-3.75 6-3.75 9s1.25 6 3.75 9c2.5-3 3.75-6 3.75-9s-1.25-6-3.75-9Z" />
-            </svg>
-          </button>
-          {isMenuOpen && (
-            <div
-              className={`absolute z-50 mt-2 w-36 rounded-xl border border-slate-200 bg-white shadow-xl ${
-                isArabic ? "left-0" : "right-0"
+        <div
+          className={`flex flex-wrap items-center gap-4 ${
+            isArabic ? "justify-end text-right" : "justify-start"
+          }`}
+        >
+          {NAV_ITEMS.map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              aria-current={currentPath === item.path ? "page" : undefined}
+              className={`text-sm font-semibold transition ${
+                currentPath === item.path
+                  ? "text-brand"
+                  : "text-slate-700 hover:text-brand"
               }`}
-              role="menu"
             >
-              {LANGUAGE_CODES.map((code) => (
-                <button
-                  key={code}
-                  type="button"
-                  onClick={() => setLanguage(code)}
-                  className={`flex w-full items-center justify-between px-3 py-2 text-sm transition ${
-                    language === code
-                      ? "bg-brand text-white"
-                      : "text-slate-600 hover:bg-slate-100"
-                  }`}
-                  role="menuitem"
-                >
-                  <span>{translations.languages[code]}</span>
-                  {language === code && <span>•</span>}
-                </button>
-              ))}
-            </div>
-          )}
+              {text[item.labelKey]}
+            </Link>
+          ))}
         </div>
       </div>
     </nav>
