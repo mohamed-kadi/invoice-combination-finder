@@ -65,7 +65,7 @@ function NavBar() {
   }, []);
 
   return (
-    <nav className="bg-white/80 backdrop-blur border-b border-slate-200">
+    <nav className="relative z-20 bg-white/80 backdrop-blur border-b border-slate-200">
       <div className="mx-auto w-full max-w-5xl px-6 py-3 space-y-3">
         <div
           className={`flex items-center justify-between ${
@@ -105,9 +105,7 @@ function NavBar() {
             </button>
             {isMenuOpen && (
               <div
-                className={`absolute z-50 mt-2 w-36 rounded-xl border border-slate-200 bg-white shadow-xl ${
-                  isArabic ? "left-0" : "right-0"
-                }`}
+                className="absolute right-0 z-50 mt-2 max-h-48 min-w-[9rem] overflow-auto rounded-xl border border-slate-200 bg-white shadow-xl"
                 role="menu"
               >
                 {LANGUAGE_CODES.map((code) => (
